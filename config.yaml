@@ -1,0 +1,353 @@
+mixed-port: 7890 # socks5和http代理的端口
+# tproxy-port: 7893 # 为软路由用户准备，使用请直接去掉注释并配置nftables或iptables
+allow-lan: true
+bind-address: "*"
+
+mode: rule
+log-level: info
+
+external-controller: 0.0.0.0:8080 # 如果你的服务器没有外部控制器，请注释（外部控制器：yacd，官方）
+secret: ""
+
+ipv6: false
+
+dns:
+  enable: true
+  listen: :5353
+  nameserver:
+    - tls://223.5.5.5
+  default-nameserver:
+    - 223.5.5.5
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - "*.lan"
+    - "*.localdomain"
+    - "*.example"
+    - "*.invalid"
+    - "*.localhost"
+    - "*.test"
+    - "*.local"
+    - "*.home.arpa"
+    - time.*.com
+    - time.*.gov
+    - time.*.edu.cn
+    - time.*.apple.com
+    - time1.*.com
+    - time2.*.com
+    - time3.*.com
+    - time4.*.com
+    - time5.*.com
+    - time6.*.com
+    - time7.*.com
+    - ntp.*.com
+    - ntp1.*.com
+    - ntp2.*.com
+    - ntp3.*.com
+    - ntp4.*.com
+    - ntp5.*.com
+    - ntp6.*.com
+    - ntp7.*.com
+    - "*.time.edu.cn"
+    - "*.ntp.org.cn"
+    - "+.pool.ntp.org"
+    - time1.cloud.tencent.com
+    - music.163.com
+    - "*.music.163.com"
+    - "*.126.net"
+    - musicapi.taihe.com
+    - music.taihe.com
+    - songsearch.kugou.com
+    - trackercdn.kugou.com
+    - "*.kuwo.cn"
+    - api-jooxtt.sanook.com
+    - api.joox.com
+    - joox.com
+    - y.qq.com
+    - "*.y.qq.com"
+    - streamoc.music.tc.qq.com
+    - mobileoc.music.tc.qq.com
+    - isure.stream.qqmusic.qq.com
+    - dl.stream.qqmusic.qq.com
+    - aqqmusic.tc.qq.com
+    - amobile.music.tc.qq.com
+    - "*.xiami.com"
+    - "*.music.migu.cn"
+    - music.migu.cn
+    - "*.msftconnecttest.com"
+    - "*.msftncsi.com"
+    - msftconnecttest.com
+    - msftncsi.com
+    - localhost.ptlogin2.qq.com
+    - localhost.sec.qq.com
+    - "+.srv.nintendo.net"
+    - "+.stun.playstation.net"
+    - xbox.*.microsoft.com
+    - xnotify.xboxlive.com
+    - "+.battlenet.com.cn"
+    - "+.wotgame.cn"
+    - "+.wggames.cn"
+    - "+.wowsgame.cn"
+    - "+.wargaming.net"
+    - proxy.golang.org
+    - stun.*.*
+    - stun.*.*.*
+    - "+.stun.*.*"
+    - "+.stun.*.*.*"
+    - "+.stun.*.*.*.*"
+    - heartbeat.belkin.com
+    - "*.linksys.com"
+    - "*.linksyssmartwifi.com"
+    - "*.router.asus.com"
+    - mesu.apple.com
+    - swscan.apple.com
+    - swquery.apple.com
+    - swdownload.apple.com
+    - swcdn.apple.com
+    - swdist.apple.com
+    - lens.l.google.com
+    - stun.l.google.com
+    - "+.nflxvideo.net"
+    - "*.square-enix.com"
+    - "*.finalfantasyxiv.com"
+    - "*.ffxiv.com"
+    - "*.mcdn.bilivideo.cn"
+
+proxy-providers:
+  proxy-provider0: # 订阅名字
+    type: http
+    url: # 订阅链接
+# 如报错请订阅转换输出为clash node list,
+# 此处仅给出一个订阅样例，若有多个订阅请自己按照该例子进行填写，并在rule groups中自行配置相应规则
+    path: ./Proxy/proxy0.yaml
+    interval: 86400
+    health-check:
+      enable: true
+      interval: 600
+      url: http://www.gstatic.com/generate_204
+
+  nodes:
+    type: file
+    path: ./Proxy/nodes.yaml
+    health-check:
+      enable: true
+      interval: 0
+      url: http://www.gstatic.com/generate_204
+    # 如需要自定义节点请自己填写nodes文件（含写法范例，可使用visual studio code的clash配置文件扩展帮助编写）（位置：./Proxy/nodes.yaml）配置,无需要请直接注释该部分
+
+rule-providers:
+
+  onedrive:
+    type: http
+    behavior: classical
+    url: "https://raw.txn3.dev/blackmatrix7/ios_rule_script/master/rule/Clash/OneDrive/OneDrive.yaml"
+    path: ./ruleset/onedrive.yaml
+    interval: 86400
+
+  game:
+    type: http
+    behavior: classical
+    url: "https://raw.txn3.dev/blackmatrix7/ios_rule_script/master/rule/Clash/Game/Game.yaml"
+    path: ./ruleset/game.yaml
+    interval: 86400
+
+  StreamService:
+    type: http
+    behavior: classical
+    url: "https://raw.txn3.dev/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia.yaml"
+    path: ./ruleset/streamservice.yaml
+    interval: 86400
+
+  gfw:
+    type: http
+    behavior: domain
+    url: "https://raw.txn3.dev/Loyalsoldier/clash-rules/release/gfw.txt"
+    path: ./ruleset/gfw.yaml
+    interval: 86400
+
+  greatfire:
+    type: http
+    behavior: domain
+    url: "https://raw.txn3.dev/Loyalsoldier/clash-rules/release/greatfire.txt"
+    path: ./ruleset/greatfire.yaml
+    interval: 86400
+
+  tld-not-cn:
+    type: http
+    behavior: domain
+    url: "https://raw.txn3.dev/Loyalsoldier/clash-rules/release/tld-not-cn.txt"
+    path: ./ruleset/tld-not-cn.yaml
+    interval: 86400
+
+  direct:
+    type: http
+    behavior: domain
+    url: "https://raw.txn3.dev/Loyalsoldier/clash-rules/release/direct.txt"
+    path: ./ruleset/direct.yaml
+    interval: 86400
+
+  private:
+    type: http
+    behavior: domain
+    url: "https://raw.txn3.dev/Loyalsoldier/clash-rules/release/private.txt"
+    path: ./ruleset/private.yaml
+    interval: 86400
+
+  telegramcidr:
+    type: http
+    behavior: classical
+    url: "https://raw.txn3.dev/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml"
+    path: ./ruleset/telegramcidr.yaml
+    interval: 86400
+
+  cncidr:
+    type: http
+    behavior: ipcidr
+    url: "https://raw.txn3.dev/Loyalsoldier/clash-rules/release/cncidr.txt"
+    path: ./ruleset/cncidr.yaml
+    interval: 86400
+
+  lancidr:
+    type: http
+    behavior: ipcidr
+    url: "https://raw.txn3.dev/Loyalsoldier/clash-rules/release/lancidr.txt"
+    path: ./ruleset/lancidr.yaml
+    interval: 86400
+
+  anti-ad:
+    type: http
+    behavior: domain
+    url: "https://raw.txn3.dev/privacy-protection-tools/anti-AD/master/anti-ad-clash.yaml"
+    path: ./ruleset/applications.yaml
+    interval: 86400
+
+rules:
+  - RULE-SET,StreamService,StreamService
+  - RULE-SET,anti-ad,ADBlock
+  - RULE-SET,private,DIRECT
+  - RULE-SET,game,Game
+  - RULE-SET,onedrive,OneDrive
+  - RULE-SET,tld-not-cn,PROXY
+  - RULE-SET,gfw,PROXY
+  - RULE-SET,greatfire,PROXY
+  - RULE-SET,direct,DIRECT
+  - RULE-SET,lancidr,DIRECT
+  - RULE-SET,cncidr,DIRECT
+  - RULE-SET,telegramcidr,Telegram
+  - GEOIP,LAN,DIRECT
+  - GEOIP,CN,DIRECT
+  - MATCH,PROXY
+
+proxy-groups:
+  - name: PROXY
+    type: select
+    proxies:
+      - nodes
+      - proxy-provider0
+# 可填写多个订阅组,如
+      - AUTO
+      - DIRECT
+
+  - name: ADBlock
+    type: select
+    proxies:
+      - REJECT
+      - DIRECT
+
+# 此处为不同用途规则组，修改proxies字段后直接同样复制即可
+# 开始
+  - name: Telegram
+    type: select
+    proxies:
+      - PROXY
+      - nodes
+      - proxy-provider0
+      # - proxy-provider1
+      - AUTO
+      - DIRECT
+
+  - name: Game
+    type: select
+    proxies:
+      - PROXY
+      - nodes
+      - proxy-provider0
+      # - proxy-provider1
+      - AUTO
+      - DIRECT
+
+  - name: OneDrive
+    type: select
+    proxies:
+      - PROXY
+      - nodes
+      - proxy-provider0
+      # - proxy-provider1
+      - AUTO
+      - DIRECT
+
+  - name: StreamService  #非大陆流媒体分流
+    type: select
+    proxies:
+      - PROXY
+      - nodes
+      - proxy-provider0
+      # - proxy-provider1
+      - fallback
+      - load-balance
+      - auto
+      - relay
+# 结束
+
+# 代理节点组引用
+# 开始
+  - name: proxy-provider0
+    type: select
+    use:
+      - proxy-provider0
+
+  # - name: proxy-provider1
+  #   type: select
+  #   use:
+  #     - proxy-provider1
+
+  - name: nodes
+    type: select
+    use:
+      - nodes
+# 结束
+
+  - name: fallback #自动切换可用节点
+    type: fallback
+    use:
+      - nodes
+      - proxy-provider0
+      # - proxy-provider1
+    url: "http://www.gstatic.com/generate_204"
+    interval: 600
+
+  - name: load-balance #负载均衡
+    type: load-balance
+    use:
+      - nodes
+      - proxy-provider0
+      # - proxy-provider1
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    # strategy: consistent-hashing # or round-robin
+
+  - name: auto
+    type: url-test #按照延迟选取最优节点
+    use:
+      - nodes
+      - proxy-provider0
+      # - proxy-provider1
+    # tolerance: 150
+    # lazy: true
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+
+  - name: relay #代理链（顺序按照nodes文件先后，如node的节点1》节点2》...》互联网，建议使用新的单独文件（同nodes文件写法）来作为代理链引用文件，便于配置）
+    type: relay
+    use:
+      - nodes
