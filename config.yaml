@@ -245,6 +245,7 @@ proxy-groups:
       - nodes
       - proxy-provider0
 # 可填写多个订阅组,如
+      # - proxy-provider1
       - AUTO
       - DIRECT
 
