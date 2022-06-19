@@ -154,7 +154,7 @@ rule-providers:
   StreamService:
     type: http
     behavior: classical
-    url: "https://raw.txn3.dev/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia.yaml"
+    url: "https://raw.txn3.dev/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia_Classical.yaml"
     path: ./ruleset/streamservice.yaml
     interval: 86400
 
